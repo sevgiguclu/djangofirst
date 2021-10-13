@@ -1,0 +1,158 @@
+{% load static %}
+
+<div class="info-boxes-container">
+    <div class="container">
+        <div class="info-box">
+            <i class="icon-shipping"></i>
+
+            <div class="info-box-content">
+                <h4>FREE SHIPPING & RETURN</h4>
+                <p>Free shipping on all orders over $99.</p>
+            </div><!-- End .info-box-content -->
+        </div><!-- End .info-box -->
+
+        <div class="info-box">
+            <i class="icon-us-dollar"></i>
+
+            <div class="info-box-content">
+                <h4>MONEY BACK GUARANTEE</h4>
+                <p>100% money back guarantee</p>
+            </div><!-- End .info-box-content -->
+        </div><!-- End .info-box -->
+
+        <div class="info-box">
+            <i class="icon-support"></i>
+
+            <div class="info-box-content">
+                <h4>ONLINE SUPPORT 24/7</h4>
+                <p>Lorem ipsum dolor sit amet.</p>
+            </div><!-- End .info-box-content -->
+        </div><!-- End .info-box -->
+    </div><!-- End .container -->
+</div><!-- End .info-boxes-container -->
+
+
+<div class="banners-group">
+    <div class="container">
+        <div class="row">
+
+            {% for rs in randomproducts  %}
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="banner banner-image">
+                        <a href="/product/{{ rs.id }}/{{ rs.slug }}">
+                            <img src="{{ rs.image.url }}" alt="banner" style="height: 300px">
+                        </a>
+                    </div><!-- End .banner -->
+
+                </div><!-- End .col-lg-3 -->
+
+
+
+
+            {% endfor %}
+
+
+        </div><!-- End .row -->
+    </div><!-- End .container -->
+</div><!-- End .banners-group -->
+
+<div class="mb-4"></div><!-- margin -->
+
+<section class="featured-section">
+    <div class="container">
+        <h2 class="carousel-title">Günün Ürünlerİ</h2>
+        <div class="product-intro owl-carousel owl-theme" data-toggle="owl" data-owl-options="{
+                        'margin': 20,
+                        'items': 2,
+                        'autoplayTimeout': 5000,
+                        'responsive': {
+                            '559': {
+                                'items': 3
+                            },
+                            '975': {
+                                'items': 4
+                            }
+                        }
+                    }">
+
+            {% for rs in dayproducts  %}
+                <div class="product-default">
+                    <figure>
+                        <a href="/product/{{ rs.id }}/{{ rs.slug }}">
+                            <img src="{{ rs.image.url }}" style="height: 300px">
+                        </a>
+                    </figure>
+                    <div class="product-details">
+                        <div class="ratings-container">
+                            <div class="product-ratings">
+                                <span class="ratings" style="width:100%"></span><!-- End .ratings -->
+                                <span class="tooltiptext tooltip-top"></span>
+                            </div><!-- End .product-ratings -->
+                        </div><!-- End .product-container -->
+                        <h2 class="product-title">
+                            <a href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.title }}</a>
+                        </h2>
+                        <div class="price-box">
+                            <span class="product-price">{{ rs.price }} TL</span>
+                        </div><!-- End .price-box -->
+                        <div class="product-action">
+                            <a class="btn-icon-wish"><i class="icon-heart"></i></a>
+                            <a class="btn-icon btn-add-cart" href="/order/addtocart/{{ rs.id }}"  ><i class="icon-bag"></i>ADD TO CART</a>
+                            <a href="/addtocart/{{ rs.id }}" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div><!-- End .product-details -->
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="carousel-title">SON ÜRÜNLER</h2>
+        <div class="product-intro owl-carousel owl-theme" data-toggle="owl" data-owl-options="{
+                        'margin': 20,
+                        'items': 2,
+                        'autoplayTimeout': 5000,
+                        'responsive': {
+                            '559': {
+                                'items': 3
+                            },
+                            '975': {
+                                'items': 4
+                            }
+                        }
+                    }">
+
+            {% for rs in lastproducts  %}
+            <div class="product-default">
+                <figure>
+                    <a href="/product/{{ rs.id }}/{{ rs.slug }}">
+                        <img src="{{ rs.image.url }}" style="height: 300px">
+                    </a>
+                </figure>
+                <div class="product-details">
+                    <div class="ratings-container">
+                        <div class="product-ratings">
+                            <span class="ratings" style="width:100%"></span><!-- End .ratings -->
+                            <span class="tooltiptext tooltip-top"></span>
+                        </div><!-- End .product-ratings -->
+                    </div><!-- End .product-container -->
+                    <h2 class="product-title">
+                        <a href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.title }}</a>
+                    </h2>
+                    <div class="price-box">
+                        <span class="product-price">{{ rs.price }}</span>
+                    </div><!-- End .price-box -->
+                    <div class="product-action">
+                        <a class="btn-icon-wish"><i class="icon-heart"></i></a>
+                        <a class="btn-icon btn-add-cart" href="/order/addtocart/{{ rs.id }}"><i class="icon-bag"></i>ADD TO CART</a>
+                        <a href="/addtocart/{{ rs.id }}" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div><!-- End .product-details -->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block title %} Django İkinci El Eşya Sitesi {% endblock %}</title>
+
+    <meta name="keywords" content="{% block keywords %} ikinci el,eşya,en ucuz,güvenilir eşya {% endblock %}" />
+    <meta name="description" content=" {% block description %} En güvenilir ikinci el eşya sitesi {% endblock %}">
+    <meta name="author" content="{% block author %}SEVGİ GÜÇLÜ {% endblock %}">
+
+    {% load static %}
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/icons/favicon.ico' %}">
+
+    <script type="text/javascript">
+        WebFontConfig = {
+            google: { families: [ 'Open+Sans:300,400,600,700,800','Poppins:300,400,500,600,700','Segoe Script:300,400,500,600,700' ] }
+        };
+        (function(d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = 'home/static/js/webfont.js'  ;
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+    </script>
+
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/fontawesome-free/css/all.min.css' %}">
+
+    <!-- jQuery !-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+    <!-- jQuery UI !-->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    {% block head %} {% endblock %}
+
+</head>
+
+<body>
+<div class="page-wrapper">
+    {% include 'header.html' %}
+    <main class="main">
+        <div class="home-top-container">
+            <div class="container">
+                <div class="row">
+                    {% block slider %} {% endblock %}
+                    {% block sidebar %} {% endblock %}
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .home-top-container -->
+        {% block content %} {% endblock %}
+    </main><!-- End .main -->
+    {% include 'footer.html' %}
+    {% block footer %} {% endblock %}
+</div><!-- End .page-wrapper -->
+<!-- Plugins JS File -->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/plugins.min.js' %} "></script>
+
+<!-- Main JS File -->
+<script src="{% static 'js/main.min.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+{% load static %}
+
+
+<header class="header">
+    <div class="header-top">
+        <div class="container">
+            <div class="header-left header-dropdowns">
+                <div class="header-dropdown">
+                    <a href="#">USD</a>
+                    <div class="header-menu">
+                        <ul>
+                            <li><a href="#">EUR</a></li>
+                            <li><a href="#">USD</a></li>
+                        </ul>
+                    </div><!-- End .header-menu -->
+                </div><!-- End .header-dropown -->
+
+                <div class="header-dropdown">
+                    <a href="#"><img src="{% static 'images/flags/en.png'%}" alt="England flag">ENGLISH</a>
+                    <div class="header-menu">
+                        <ul>
+                            <li><a href="#"><img src="{% static 'images/flags/en.png'%}" alt="England flag">ENGLISH</a></li>
+                            <li><a href="#"><img src="{% static 'images/flags/fr.png'%}" alt="France flag">FRENCH</a></li>
+                        </ul>
+                    </div><!-- End .header-menu -->
+                </div><!-- End .header-dropown -->
+
+                <div class="dropdown compare-dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                        <i class="icon-retweet"></i> Compare (2)
+                    </a>
+
+                    <div class="dropdown-menu" >
+                        <div class="dropdownmenu-wrapper">
+                            <ul class="compare-products">
+                                <li class="product">
+                                    <a href="#" class="btn-remove" title="Remove Product"><i class="icon-cancel"></i></a>
+                                    <h4 class="product-title"><a href="product.html">Lady White Top</a></h4>
+                                </li>
+                                <li class="product">
+                                    <a href="#" class="btn-remove" title="Remove Product"><i class="icon-cancel"></i></a>
+                                    <h4 class="product-title"><a href="product.html">Blue Women Shirt</a></h4>
+                                </li>
+                            </ul>
+
+                            <div class="compare-actions">
+                                <a href="#" class="action-link">Clear All</a>
+                                <a href="#" class="btn btn-primary">Compare</a>
+                            </div>
+                        </div><!-- End .dropdownmenu-wrapper -->
+                    </div><!-- End .dropdown-menu -->
+                </div><!-- End .dropdown -->
+            </div><!-- End .header-left -->
+
+            <div class="header-right">
+
+                <div class="header-dropdown dropdown-expanded">
+                    <a href="#">Links</a>
+                    <div class="header-menu">
+                        <ul>
+                            <li><a href="/user">MY ACCOUNT </a></li>
+                            <li><a href="/sss">SSS</a></li>
+                            <li><a href="/iletisim">Contact</a></li>
+                            <li><a href="/login" class="login-link">LOG IN</a></li>
+                        </ul>
+                    </div><!-- End .header-menu -->
+                </div><!-- End .header-dropown -->
+            </div><!-- End .header-right -->
+        </div><!-- End .container -->
+    </div><!-- End .header-top -->
+
+    <script>
+        $(function() {
+            $("#query").autocomplete({
+                source: "/search_auto/",
+                select: function (event, ui) { //item selected
+                    AutoCompleteSelectHandler(event, ui)
+                },
+                minLength: 2,
+            });
+        });
+
+        function AutoCompleteSelectHandler(event, ui)
+        {
+            var selectedObj = ui.item;
+        }
+
+    </script>
+
+
+    <div class="header-middle">
+        <div class="container">
+            <div class="header-left">
+                <a href="/" class="logo">
+                    <img src="{% static 'images/logo.png'%}" alt="Porto Logo">
+                </a>
+            </div><!-- End .header-left -->
+
+            <div class="header-center">
+
+                <div class="header-search">
+                    <a href="#" class="search-toggle" role="button"><i class="icon-magnifier"></i></a>
+
+                    <form action="/search/" method="post">
+
+                        <div class="header-search-wrapper">
+                            {% csrf_token %}
+                            <input type="search" class="form-control" name="query" id="query" placeholder="Search..." required>
+
+                            {% load mptt_tags %}
+                            <div class="select-custom">
+                                <select id="cat" name="cat_id">
+                                    <option value="0">All Categories</option>
+                                    {% recursetree category %}
+                                        {% if node.is_leaf_node %}
+                                            <option value="{{ node.id }}"> {{ node.title }}</option>
+                                        {% endif %}
+                                        {% if not node.is_leaf_node %}
+                                            <optgroup label="{{ node.title }}">
+                                                {{ children }}
+                                            </optgroup>
+                                        {% endif %}
+                                    {% endrecursetree %}
+                                </select>
+                            </div><!-- End .select-custom -->
+                            <button class="btn" type="submit" ><i class="icon-magnifier"></i></button>
+                        </div><!-- End .header-search-wrapper -->
+                    </form>
+                </div><!-- End .header-search -->
+            </div><!-- End .headeer-center -->
+
+
+
+
+            <div class="dropdown cart-dropdown" >
+                {% if user.id is not None %}
+                    <div class="dropdown" >
+                        <strong style="color: white">{{ user.first_name }}</strong>
+                        <a href="my-account.html"></a> <i class="fas fa-user-circle" style="font-size: 30px;margin: 10px"></i></a>
+                    </div>
+                    <div class="dropdown-menu" >
+                        <div class="dropdownmenu-wrapper">
+                            <div class="dropdown-cart-products">
+
+                                <div class="product">
+                                    <div class="product-details">
+                                        <h4 class="product-title">
+                                            <a href="/user">My Account</a>
+                                        </h4>
+                                    </div><!-- End .product-details -->
+                                </div><!-- End .product -->
+
+                                <div class="product">
+                                    <div class="product-details">
+                                        <h4 class="product-title">
+                                            <a href="/logout/">Logout</a>
+                                        </h4>
+                                    </div><!-- End .product-details -->
+                                </div><!-- End .product -->
+
+                            </div><!-- End .cart-product -->
+                        </div><!-- End .dropdownmenu-wrapper -->
+                    </div><!-- End .dropdown-menu -->
+                {% else %}
+                    <div style="margin: 5px;color: white;"><a href="/login/" class="text-uppercase" style="color: white">Login</a> / <a href="/signup/" class="text-uppercase" style="color: white">Sign Up</a></div>
+                {% endif %}
+
+            </div><!-- End .dropdown -->
+
+
+
+            <div >
+
+                <a href="/shopcart"><i class="fas fa-shopping-bag" style="font-size: 28px" ></i></a>
+
+
+
+            </div><!-- End .dropdown -->
+
+
+
+        </div><!-- End .header-right -->
+    </div><!-- End .container -->
+    </div><!-- End .header-middle -->
+
+    <div class="header-bottom sticky-header">
+        <div class="container">
+            <nav class="main-nav">
+                <ul class="menu sf-arrows">
+
+                <li class="active"><a href="/">Anasayfa</a></li>
+                    {% recursetree category %}
+                        <li>
+                            <a href="/content/{{ node.id }}/{{ node.slug }}" class="sf-with-ul" {% if not node.is_leaf_node %} data-toggle="dropdown" aria-expanded="true" {% endif %} >{{ node.title }}</a>
+                            <div class="megamenu megamenu-container">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                {% if not node.is_leaf_node %}
+                                                    <ul>
+                                                        <li><a href="category-banner-boxed-slider.html">{{ children }}</a></li>
+                                                    </ul>
+                                                {% endif %}
+
+                                            </div><!-- End .col-lg-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .col-lg-8 -->
+
+                                </div>
+                            </div><!-- End .megamenu -->
+                        </li>
+                    {% endrecursetree %}
+
+
+                    <li>
+                        <a href="/hakkimizda">Hakkımızda</a>
+                    </li>
+                    <li>
+                        <a href="/referanslar">Referanslar</a>
+                    </li>
+                    <li>
+                        <a href="/iletisim">İletışım</a>
+                    </li>
+
+
+                </ul>
+            {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+
+            </nav>
+        </div><!-- End .header-bottom -->
+    </div><!-- End .header-bottom -->
+</header><!-- End .header -->

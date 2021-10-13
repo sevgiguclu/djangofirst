@@ -1,0 +1,61 @@
+{% extends "homebase.html" %}
+
+{% block title %} Products Search Results  {% endblock %}
+{% block keywords %} {{ categorydata.keywords }} {% endblock %}
+{% block description %} {{ categorydata.description }} {% endblock %}
+
+{% block head %} <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}' /> {% endblock %}
+
+
+
+{% block content %}
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Arama Sonuçları</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav>
+
+    <div class="about-section">
+        <div class="container">
+            <div class="row">
+                <table class="ratings-table">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for rs in products %}
+
+                        <tr style="height: 150px">
+                            <td>
+                                <a href="/product/{{ rs.id }}/{{ rs.slug }}"><img src="{{ rs.image.url }}" style="height: 100px;"> </a>
+                            </td>
+
+                            <td>
+                                <h4><a href="/product/{{ rs.id }}/{{ rs.slug }}"></a> {{ rs.title }}</h4>
+                            </td>
+                            <td>
+                                <a href="/category/{{ rs.category.id }}/{{ rs.category.slug }}"> {{ rs.category }}</a>
+                            </td>
+                            <td>
+                                <h4>{{rs.price  }} TL</h4>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .about-section -->
+
+
+{% endblock %}
+

@@ -1,0 +1,579 @@
+{% extends "homebase.html" %}
+
+{% block title %}  {{ product.title }} {% endblock %}
+{% block keywords %} {{ product.keywords }} {% endblock %}
+{% block description %} {{ product.description }} {% endblock %}
+
+{% block head %} <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}' /> {% endblock %}
+
+
+
+{% block content %}
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item" aria-current="page"> <a href="/">Products</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="/category/{{ product.category_id }}/{{ product.category.slug }}">{{ product.category }}</a></li>
+
+                <li class="breadcrumb-item active" aria-current="page">{{ product.title }}</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="product-single-container product-single-default">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-6 product-single-gallery">
+                            <div class="product-slider-container product-item">
+                                <div class="product-single-carousel owl-carousel owl-theme">
+
+
+                                    <div class="product-item">
+                                        <img class="product-single-image" src="{{ product.image.url }}" data-zoom-image="assets/images/products/zoom/product-1-big.jpg"/>
+                                    </div>
+
+                                    {% for rs in images  %}
+                                        <div class="product-item">
+                                            <img class="product-single-image" src="{{ rs.image.url }}" data-zoom-image="assets/images/products/zoom/product-2-big.jpg"/>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                                <!-- End .product-single-carousel -->
+                                <span class="prod-full-screen">
+                                            <i class="icon-plus"></i>
+                                        </span>
+                            </div>
+                            <div class="prod-thumbnail row owl-dots" id='carousel-custom-dots'>
+                                <div class="col-3 owl-dot">
+                                    <img src="{{ product.image.url }}" style="height: 130px" />
+                                </div>
+                                {% for rs in images  %}
+                                    <div class="col-3 owl-dot">
+
+                                        <img src="{{ rs.image.url }}" style="height: 130px"/>
+
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div><!-- End .col-lg-7 -->
+
+                        <div class="col-lg-5 col-md-6">
+                            <div class="product-single-details">
+                                <h1 class="product-title">{{ product.title }}</h1>
+
+                                <div class="ratings-container">
+                                    <div class="product-ratings">
+                                        <span class="ratings" style="width:60%"></span><!-- End .ratings -->
+                                    </div><!-- End .product-ratings -->
+
+                                    <a href="#" class="rating-link">( 6 Reviews )</a>
+                                </div><!-- End .product-container -->
+
+                                <div class="price-box">
+                                    <span class="old-price">$81.00</span>
+                                    <span class="product-price">{{ product.price }}TL</span>
+                                </div><!-- End .price-box -->
+
+                                <div class="product-desc">
+                                    <p>{{ product.description }}</p>
+                                </div><!-- End .product-desc -->
+
+
+
+                                <div class="product-action product-all-icons">
+                                    <form action="/order/addtocart/{{ product.id }}" method="post">
+                                        {% csrf_token %}
+                                        <div class="product-single-qty">
+                                            <!-- <input class="horizontal-quantity form-control" type="text" -->
+                                            <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                                                <span class="input-group-btn input-group-prepend"></span>
+                                                <input class="horizontal-quantity form-control" type="number" name="quantity" min="0" max="{{ product.amount }}" value="1">
+                                                <span class="input-group-btn input-group-append"></span>
+                                            </div>
+                                        </div><!-- End .product-single-qty -->
+                                        <a href="/order/addtocart/{{ product.id }}"  type="submit" class="paction add-cart" title="Add to Cart"> <span>Add to Cart</span></a>
+                                    </form>
+
+
+                                    <a href="#" class="paction add-wishlist" title="Add to Wishlist">
+                                        <span>Add to Wishlist</span>
+                                    </a>
+                                    <a href="#" class="paction add-compare" title="Add to Compare">
+                                        <span>Add to Compare</span>
+                                    </a>
+                                </div><!-- End .product-action -->
+
+                                <div class="product-single-share">
+                                    <label>Share:</label>
+                                    <!-- www.addthis.com share plugin-->
+                                    <div class="addthis_inline_share_toolbox"></div>
+                                </div><!-- End .product single-share -->
+                            </div><!-- End .product-single-details -->
+                        </div><!-- End .col-lg-5 -->
+                    </div><!-- End .row -->
+                </div><!-- End .product-single-container -->
+
+                <div class="product-single-tabs">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="product-tab-desc" data-toggle="tab" href="#product-desc-content" role="tab" aria-controls="product-desc-content" aria-selected="true">Detail</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="product-tab-tags" data-toggle="tab" href="#product-tags-content" role="tab" aria-controls="product-tags-content" aria-selected="false">Tags</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="product-tab-reviews" data-toggle="tab" href="#product-reviews-content" role="tab" aria-controls="product-reviews-content" aria-selected="false">Reviews</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="product-desc-content" role="tabpanel" aria-labelledby="product-tab-desc">
+                            <div class="product-desc-content">
+                                <p>{{ product.detail|safe }}</p>
+
+                            </div><!-- End .product-desc-content -->
+                        </div><!-- End .tab-pane -->
+
+                        <div class="tab-pane fade" id="product-tags-content" role="tabpanel" aria-labelledby="product-tab-tags">
+                            <div class="product-tags-content">
+                                <form action="#">
+                                    <h4>Add Your Tags:</h4>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-sm" required>
+                                        <input type="submit" class="btn btn-primary" value="Add Tags">
+                                    </div><!-- End .form-group -->
+                                </form>
+                                <p class="note">Use spaces to separate tags. Use single quotes (') for phrases.</p>
+                            </div><!-- End .product-tags-content -->
+                        </div><!-- End .tab-pane -->
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+
+
+                        <div class="tab-pane fade" id="product-reviews-content" role="tabpanel" aria-labelledby="product-tab-reviews">
+                            <div class="product-reviews-content">
+
+
+                                <div class="add-product-review">
+                                    <h3 class="text-uppercase heading-text-color font-weight-semibold">WRITE YOUR OWN REVIEW</h3>
+
+
+                                    <form action="/product/addcomment/{{ product.id }}/" method="post">
+                                        {% csrf_token %}
+                                        <table class="ratings-table">
+                                            <thead>
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>1 star</th>
+                                                <th>2 stars</th>
+                                                <th>3 stars</th>
+                                                <th>4 stars</th>
+                                                <th>5 stars</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td><p>How do you rate this product? </p></td>
+                                                <td>
+                                                    <input type="radio" name="rate" id="Quality_1" value="1" class="radio" checked="checked">
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="rate" id="Quality_2" value="2" class="radio">
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="rate" id="Quality_3" value="3" class="radio">
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="rate" id="Quality_4" value="4" class="radio">
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="rate" id="Quality_5" value="5" class="radio">
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+
+
+                                        <div class="form-group">
+                                            <label>Nickname <span class="required">*</span></label>
+                                            <input type="text" name="subject" id="id_username"  class="form-control form-control-sm" required>
+                                        </div><!-- End .form-group -->
+                                        <div class="form-group">
+                                            <label>Subject <span class="required">*</span></label>
+                                            <input type="text" class="form-control form-control-sm" required>
+                                        </div><!-- End .form-group -->
+                                        <div class="form-group mb-2">
+                                            <label>Comment <span class="required">*</span></label>
+                                            <textarea cols="5" rows="6" name="comment" class="form-control form-control-sm"></textarea>
+                                        </div><!-- End .form-group -->
+                                        {% if user.id is not None %}
+                                            <input type="submit" class="btn btn-primary" value="Send Comment">
+                                        {% else %}
+                                            Yorum Yapmak İçin <a href="/login">Login</a> Olmalısınız!
+                                        {% endif %}
+                                    </form>
+
+
+                                </div><!-- End .add-product-review -->
+                            </div><!-- End .product-reviews-content -->
+                            <div class="product-reviews-content">
+
+                                {% for rs in comments %}
+                                    <div class="entry-author" style="margin-top: 30px">
+                                        <h3><i class="icon-user"></i>{{rs.user.username}}</h3>
+
+                                        <figure>
+                                            <a href="#">
+                                                <img src="{{rs.user.userprofile.image.url}}" style="height: 50px" alt="author">
+                                            </a>
+                                        </figure>
+
+                                        <div class="author-content">
+                                            <h4><a href="#">{{ rs.user.first_name }} {{ rs.user.last_name}}</a></h4>
+                                            <p>{{ rs.comment }}</p>
+                                        </div><!-- End .author.content -->
+                                    </div><!-- End .entry-author -->
+
+
+                                {% endfor %}
+
+
+
+                            </div><!-- End .product-reviews-content -->
+
+
+                        </div><!-- End .tab-pane -->
+                    </div><!-- End .tab-content -->
+                </div><!-- End .product-single-tabs -->
+            </div><!-- End .col-lg-9 -->
+
+            <div class="sidebar-overlay"></div>
+            <div class="sidebar-toggle"><i class="icon-sliders"></i></div>
+            <aside class="sidebar-product col-lg-3 padding-left-lg mobile-sidebar">
+                <div class="sidebar-wrapper">
+                    <div class="widget widget-brand">
+                        <a href="#">
+                            <img src="assets/images/product-brand.png" alt="brand name">
+                        </a>
+                    </div><!-- End .widget -->
+
+                    <div class="widget widget-info">
+                        <ul>
+                            <li>
+                                <i class="icon-shipping"></i>
+                                <h4>FREE<br>SHIPPING</h4>
+                            </li>
+                            <li>
+                                <i class="icon-us-dollar"></i>
+                                <h4>100% MONEY<br>BACK GUARANTEE</h4>
+                            </li>
+                            <li>
+                                <i class="icon-online-support"></i>
+                                <h4>ONLINE<br>SUPPORT 24/7</h4>
+                            </li>
+                        </ul>
+                    </div><!-- End .widget -->
+
+                    <div class="widget widget-banner">
+                        <div class="banner banner-image">
+                            <a href="#">
+                                <img src="assets/images/banners/banner-sidebar.jpg" alt="Banner Desc">
+                            </a>
+                        </div><!-- End .banner -->
+                    </div><!-- End .widget -->
+
+                    <div class="widget widget-featured">
+                        <h3 class="widget-title">Featured Products</h3>
+
+                        <div class="widget-body">
+                            <div class="owl-carousel widget-featured-products">
+                                <div class="featured-col">
+                                    <div class="product-default left-details product-widget">
+                                        <figure>
+                                            <a href="product.html">
+                                                <img src="assets/images/products/product-7.jpg">
+                                            </a>
+                                        </figure>
+                                        <div class="product-details">
+                                            <h2 class="product-title">
+                                                <a href="product.html">Product Short Name</a>
+                                            </h2>
+                                            <div class="ratings-container">
+                                                <div class="product-ratings">
+                                                    <span class="ratings" style="width:100%"></span><!-- End .ratings -->
+                                                    <span class="tooltiptext tooltip-top"></span>
+                                                </div><!-- End .product-ratings -->
+                                            </div><!-- End .product-container -->
+                                            <div class="price-box">
+                                                <span class="product-price">$49.00</span>
+                                            </div><!-- End .price-box -->
+                                        </div><!-- End .product-details -->
+                                    </div><div class="product-default left-details product-widget">
+                                    <figure>
+                                        <a href="product.html">
+                                            <img src="assets/images/products/product-8.jpg">
+                                        </a>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h2 class="product-title">
+                                            <a href="product.html">Product Short Name</a>
+                                        </h2>
+                                        <div class="ratings-container">
+                                            <div class="product-ratings">
+                                                <span class="ratings" style="width:100%"></span><!-- End .ratings -->
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div><!-- End .product-ratings -->
+                                        </div><!-- End .product-container -->
+                                        <div class="price-box">
+                                            <span class="product-price">$49.00</span>
+                                        </div><!-- End .price-box -->
+                                    </div><!-- End .product-details -->
+                                </div><div class="product-default left-details product-widget">
+                                    <figure>
+                                        <a href="product.html">
+                                            <img src="assets/images/products/product-9.jpg">
+                                        </a>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h2 class="product-title">
+                                            <a href="product.html">Product Short Name</a>
+                                        </h2>
+                                        <div class="ratings-container">
+                                            <div class="product-ratings">
+                                                <span class="ratings" style="width:100%"></span><!-- End .ratings -->
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div><!-- End .product-ratings -->
+                                        </div><!-- End .product-container -->
+                                        <div class="price-box">
+                                            <span class="product-price">$49.00</span>
+                                        </div><!-- End .price-box -->
+                                    </div><!-- End .product-details -->
+                                </div>
+                                </div><!-- End .featured-col -->
+
+                                <div class="featured-col">
+                                    <div class="product-default left-details product-widget">
+                                        <figure>
+                                            <a href="product.html">
+                                                <img src="assets/images/products/product-10.jpg">
+                                            </a>
+                                        </figure>
+                                        <div class="product-details">
+                                            <h2 class="product-title">
+                                                <a href="product.html">Product Short Name</a>
+                                            </h2>
+                                            <div class="ratings-container">
+                                                <div class="product-ratings">
+                                                    <span class="ratings" style="width:100%"></span><!-- End .ratings -->
+                                                    <span class="tooltiptext tooltip-top"></span>
+                                                </div><!-- End .product-ratings -->
+                                            </div><!-- End .product-container -->
+                                            <div class="price-box">
+                                                <span class="product-price">$49.00</span>
+                                            </div><!-- End .price-box -->
+                                        </div><!-- End .product-details -->
+                                    </div><div class="product-default left-details product-widget">
+                                    <figure>
+                                        <a href="product.html">
+                                            <img src="assets/images/products/product-11.jpg">
+                                        </a>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h2 class="product-title">
+                                            <a href="product.html">Product Short Name</a>
+                                        </h2>
+                                        <div class="ratings-container">
+                                            <div class="product-ratings">
+                                                <span class="ratings" style="width:100%"></span><!-- End .ratings -->
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div><!-- End .product-ratings -->
+                                        </div><!-- End .product-container -->
+                                        <div class="price-box">
+                                            <span class="product-price">$49.00</span>
+                                        </div><!-- End .price-box -->
+                                    </div><!-- End .product-details -->
+                                </div><div class="product-default left-details product-widget">
+                                    <figure>
+                                        <a href="product.html">
+                                            <img src="assets/images/products/product-12.jpg">
+                                        </a>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h2 class="product-title">
+                                            <a href="product.html">Product Short Name</a>
+                                        </h2>
+                                        <div class="ratings-container">
+                                            <div class="product-ratings">
+                                                <span class="ratings" style="width:100%"></span><!-- End .ratings -->
+                                                <span class="tooltiptext tooltip-top"></span>
+                                            </div><!-- End .product-ratings -->
+                                        </div><!-- End .product-container -->
+                                        <div class="price-box">
+                                            <span class="product-price">$49.00</span>
+                                        </div><!-- End .price-box -->
+                                    </div><!-- End .product-details -->
+                                </div>
+                                </div><!-- End .featured-col -->
+                            </div><!-- End .widget-featured-slider -->
+                        </div><!-- End .widget-body -->
+                    </div><!-- End .widget -->
+                </div>
+            </aside><!-- End .col-md-3 -->
+        </div><!-- End .row -->
+    </div><!-- End .container -->
+
+
+
+
+    <div class="features-section">
+        <div class="container">
+            <h2 class="subtitle">WHY CHOOSE US</h2>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="feature-box">
+                        <i class="icon-shipped"></i>
+
+                        <div class="feature-box-content">
+                            <h3>Free Shipping</h3>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industr in some form.</p>
+                        </div><!-- End .feature-box-content -->
+                    </div><!-- End .feature-box -->
+                </div><!-- End .col-lg-4 -->
+
+                <div class="col-lg-4">
+                    <div class="feature-box">
+                        <i class="icon-us-dollar"></i>
+
+                        <div class="feature-box-content">
+                            <h3>100% Money Back Guarantee</h3>
+                            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
+                        </div><!-- End .feature-box-content -->
+                    </div><!-- End .feature-box -->
+                </div><!-- End .col-lg-4 -->
+
+                <div class="col-lg-4">
+                    <div class="feature-box">
+                        <i class="icon-online-support"></i>
+
+                        <div class="feature-box-content">
+                            <h3>Online Support 24/7</h3>
+                            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
+                        </div><!-- End .feature-box-content -->
+                    </div><!-- End .feature-box -->
+                </div><!-- End .col-lg-4 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .features-section -->
+
+    <div class="testimonials-section">
+        <div class="container">
+            <h2 class="subtitle text-center">HAPPY CLIENTS</h2>
+
+            <div class="testimonials-carousel owl-carousel owl-theme">
+                <div class="testimonial">
+                    <div class="testimonial-owner">
+                        <figure>
+                            <img src="assets/images/clients/client1.png" alt="client">
+                        </figure>
+
+                        <div>
+                            <h4 class="testimonial-title">john Smith</h4>
+                            <span>Proto Co Ceo</span>
+                        </div>
+                    </div><!-- End .testimonial-owner -->
+
+                    <blockquote>
+                        <p>Lorem ipsum dolor sit amet, consectetur elitad adipiscing Cras non placerat mipsum dolor sit amet, consectetur elitad adipiscing.</p>
+                    </blockquote>
+                </div><!-- End .testimonial -->
+
+                <div class="testimonial">
+                    <div class="testimonial-owner">
+                        <figure>
+                            <img src="assets/images/clients/client2.png" alt="client">
+                        </figure>
+
+                        <div>
+                            <h4 class="testimonial-title">Bob Smith</h4>
+                            <span>Proto Co Ceo</span>
+                        </div>
+                    </div><!-- End .testimonial-owner -->
+
+                    <blockquote>
+                        <p>Lorem ipsum dolor sit amet, consectetur elitad adipiscing Cras non placerat mipsum dolor sit amet, consectetur elitad adipiscing.</p>
+                    </blockquote>
+                </div><!-- End .testimonial -->
+
+                <div class="testimonial">
+                    <div class="testimonial-owner">
+                        <figure>
+                            <img src="assets/images/clients/client1.png" alt="client">
+                        </figure>
+
+                        <div>
+                            <h4 class="testimonial-title">john Smith</h4>
+                            <span>Proto Co Ceo</span>
+                        </div>
+                    </div><!-- End .testimonial-owner -->
+
+                    <blockquote>
+                        <p>Lorem ipsum dolor sit amet, consectetur elitad adipiscing Cras non placerat mipsum dolor sit amet, consectetur elitad adipiscing.</p>
+                    </blockquote>
+                </div><!-- End .testimonial -->
+            </div><!-- End .testimonials-slider -->
+        </div><!-- End .container -->
+    </div><!-- End .testimonials-section -->
+
+    <div class="counters-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 col-md-4 count-container">
+                    <div class="count-wrapper">
+                        <span class="count" data-from="0" data-to="200" data-speed="2000" data-refresh-interval="50">200</span>+
+                    </div><!-- End .count-wrapper -->
+                    <h4 class="count-title">MILLION CUSTOMERS</h4>
+                </div><!-- End .col-md-4 -->
+
+                <div class="col-6 col-md-4 count-container">
+                    <div class="count-wrapper">
+                        <span class="count" data-from="0" data-to="1800" data-speed="2000" data-refresh-interval="50">1800</span>+
+                    </div><!-- End .count-wrapper -->
+                    <h4 class="count-title">TEAM MEMBERS</h4>
+                </div><!-- End .col-md-4 -->
+
+                <div class="col-6 col-md-4 count-container">
+                    <div class="count-wrapper">
+                        <span class="count" data-from="0" data-to="24" data-speed="2000" data-refresh-interval="50">24</span><span>HR</span>
+                    </div><!-- End .count-wrapper -->
+                    <h4 class="count-title">SUPPORT AVAILABLE</h4>
+                </div><!-- End .col-md-4 -->
+
+                <div class="col-6 col-md-4 count-container">
+                    <div class="count-wrapper">
+                        <span class="count" data-from="0" data-to="265" data-speed="2000" data-refresh-interval="50">265</span>+
+                    </div><!-- End .count-wrapper -->
+                    <h4 class="count-title">SUPPORT AVAILABLE</h4>
+                </div><!-- End .col-md-4 -->
+
+                <div class="col-6 col-md-4 count-container">
+                    <div class="count-wrapper">
+                        <span class="count" data-from="0" data-to="99" data-speed="2000" data-refresh-interval="50">99</span><span>%</span>
+                    </div><!-- End .count-wrapper -->
+                    <h4 class="count-title">SUPPORT AVAILABLE</h4>
+                </div><!-- End .col-md-4 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .counters-section -->
+{% endblock %}
+
